@@ -89,4 +89,10 @@ class CreatureController extends Controller
             'CreatureRace' => $race
         ]);
     }
+
+    public function type($type)
+    {
+        $creatures = Creatures::where('CreatureType', $type)->get();
+        return response()->json($creatures);
+    }
 }
