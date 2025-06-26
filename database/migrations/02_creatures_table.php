@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('creatures', function (Blueprint $table) {
             $table->id();
-            $name_creature = $table->string('name')->unique();
+            $name = $table->string('name')->unique();
             $pv = $table->integer('pv')->default(0);
             $atk = $table->integer('atk')->default(0);
             $def = $table->integer('def')->default(0);
             $speed = $table->integer('speed')->default(0);
-            $type = $table->string('type')->default('Unknown');
-            $race = $table->string('race')->default('Unknown');
+            $type = $table->enum('CreatureType', ['ELECTRIK', 'WATER', "FIRE"]);
+            $race = $table->enum('CreatureRace', ['MOUSE', 'DRAGON', "PLANT"]);
             $capture_rate = $table->integer('capture_rate')->default(0);
             $avatar = $table->string('avatar')->default('default_avatar.png');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
