@@ -30,11 +30,11 @@ class CreatureController extends Controller
             'capture_rate' => 'required|integer|min:0',
             'CreatureType' => 'required|in:ELECTRIK,WATER,FIRE',
             'CreatureRace' => 'required|in:MOUSE,DRAGON,PLANT',
+            'user_id' => 'required|integer|min:0',
         ]);
 
         $creature = new Creatures();
         $creature->fill($formFields);
-        $creature->user_id = $request->user()->id;
         $creature->save();
         return response()->json($creature);
     }
@@ -42,7 +42,7 @@ class CreatureController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Creature $creature)
+    public function show(Creatures $creature)
     {
         return response()->json($creature);
     }
@@ -50,7 +50,7 @@ class CreatureController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Creature $creature)
+    public function update(Request $request, Creatures $creature)
     {
         $formFields = $request->validate([
             'name' => 'required|string',
@@ -72,7 +72,7 @@ class CreatureController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Creature $creature)
+    public function destroy(Creatures $creature)
     {
         $creature->delete();
         return response()->json(['success' => 'success']);

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -34,7 +36,7 @@ class UserController extends Controller
 
         $user = new User();
         $user->fill($formFields);
-        $user->role = 'ROLE_USER';
+        $user->role = 'USER';
         $user->save();
         return response()->json($user);
     }

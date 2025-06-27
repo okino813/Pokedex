@@ -19,8 +19,9 @@ Route::delete('/users/{user}', [UserController::class, 'destroy']);
 Route::get('/creatures/typerace', [CreatureController::class, 'getTypeRace']);
 Route::get('/creatures/type/{type}', [CreatureController::class, 'type']);
 Route::get('/creatures', [CreatureController::class, 'index']);
-Route::get('/creatures/{user}', [CreatureController::class, 'show']);
+Route::get('/creatures/{creature}', [CreatureController::class, 'show']);
 Route::post('/creatures', [CreatureController::class, 'store']);
-Route::put('/creatures/{user}', [CreatureController::class, 'update']);
-Route::delete('/creatures/{user}', [CreatureController::class, 'destroy']);
+Route::put('/creatures/{creature}', [CreatureController::class, 'update']);
+Route::delete('/creatures/{creature}', [CreatureController::class, 'destroy']);
+
 
