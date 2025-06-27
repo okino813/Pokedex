@@ -31,7 +31,7 @@ class UserController extends Controller
                 'max:255',
                 Rule::unique('users', 'email')
             ],
-            'password' => ['required', 'confirmed', Password::defaults()]
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
         $user = new User();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Creatures;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class CreatureController extends Controller
 {
@@ -31,10 +32,18 @@ class CreatureController extends Controller
             'CreatureType' => 'required|in:ELECTRIK,WATER,FIRE',
             'CreatureRace' => 'required|in:MOUSE,DRAGON,PLANT',
             'user_id' => 'required|integer|min:0',
+            'avatar_blob' => 'mimes:jpeg,jpg,png|max:15360',
         ]);
 
         $creature = new Creatures();
         $creature->fill($formFields);
+
+      if($request->file('avatar_blob')){
+            $fileName = time() . '_' . $request->avatar_blob->getClientOriginalName();
+            $creature->avatar = $fileName;
+            $request->avatar_blob->move(public_path('images/uploads'), $fileName);
+        }
+
         $creature->save();
         return response()->json($creature);
     }
@@ -61,9 +70,22 @@ class CreatureController extends Controller
             'capture_rate' => 'required|integer|min:0',
             'CreatureType' => 'required|in:ELECTRIK,WATER,FIRE',
             'CreatureRace' => 'required|in:MOUSE,DRAGON,PLANT',
+            'avatar_blob' => 'mimes:jpg,jpeg,png|max:15360'
         ]);
 
         $creature->fill($formFields);
+
+        // si image présente et ancienne image existe alors suppression de l'ancienne image
+        if ($request->file('avatar_blob') && File::exists(public_path('images/uploads/' . $creature->avatar))) {
+          File::delete(public_path('images/uploads/' . $creature->avatar));
+        }
+
+        if ($request->file('avatar_blob')) {
+          $fileName = time() . '_' . $request->avatar_blob->getClientOriginalName();
+          $creature->avatar = $fileName;
+          $request->avatar_blob->move(public_path('images/uploads'), $fileName);
+        }
+
         $creature->save();
         return response()->json($creature);
 
