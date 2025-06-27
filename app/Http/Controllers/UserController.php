@@ -7,8 +7,27 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
+
 class UserController extends Controller
 {
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
+    public function currentUser()
+    {
+        return response()->json([
+            'meta' => [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'User fetched successfully!',
+            ],
+            'data' => [
+                'user' => auth()->user(),
+            ],
+        ]);
+    }
     /**
      * Display a listing of the resource.
      */

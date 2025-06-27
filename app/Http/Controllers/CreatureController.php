@@ -9,17 +9,27 @@ use Illuminate\Support\Facades\File;
 
 class CreatureController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        return response()->json(Creatures::all());
+        $name = $request->query('name_creature');
+        $minPv = $request->query('minPv');
+        $maxPv = $request->query('maxPv');
+        $creatures = Creatures::search($name, $minPv, $maxPv);
+        return response()->json($creatures);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function listByUser(?User $user = null)
+    {
+        if (is_null($user)) {
+            return response()->json(['error' => 'User is required'], 400);
+        }
+
+        $creatures = Creatures::where('user_id', $user->id)->get();
+
+        return response()->json($creatures);
+    }
+
     public function store(Request $request)
     {
         $formFields = $request->validate([
@@ -48,17 +58,11 @@ class CreatureController extends Controller
         return response()->json($creature);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Creatures $creature)
     {
         return response()->json($creature);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Creatures $creature)
     {
         $formFields = $request->validate([
@@ -91,9 +95,6 @@ class CreatureController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Creatures $creature)
     {
         $creature->delete();
